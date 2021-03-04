@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+// import App from 'App';
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,4 +30,5 @@ Vue.config.devtools = true
 
 const app = new Vue({
     el: '#app',
+
 });

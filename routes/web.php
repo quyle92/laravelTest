@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,4 +28,4 @@ Route::get('axios', function () {
     return view('axios');	
 });
 
-Route::resource('products', ProductController::class);
+Route::resource('products', \ProductController::class);

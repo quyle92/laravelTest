@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -13,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Product::orderBy('created_at', 'desc')->paginate(3);
     }
 
     /**
@@ -35,7 +37,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        'name' => 'required|min:5',
+        'name' => 'required|min:2',
         'price' => 'required|numeric|gt:0',
         ]);
 
@@ -47,6 +49,7 @@ class ProductController extends Controller
         return response([
             'product' => $product
         ], 200);
+
     }
 
     /**
@@ -80,7 +83,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+        'name' => 'required|min:2',
+        'price' => 'required|numeric|gt:0',
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $product->name = $request->input('name');
+        $product->price = $request->input('price');
+        
+        $product->save();
+
+        return response([
+            'product' => $product
+        ], 200);
     }
 
     /**
@@ -91,6 +108,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        
+        return Product::orderBy('created_at', 'desc')->paginate(3);
+
+      
     }
 }
