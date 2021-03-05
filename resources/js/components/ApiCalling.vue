@@ -69,13 +69,13 @@
         >
             <a class="page-link" href="#">Previous</a>
         </li>
-        <li class="page-item" v-for='( prev, index ) in prevRange' v-bind:key="'prev' + index" @click="getListProducts(prev)">
+        <li class="page-item" v-for='( prev, index ) in prevRange' v-bind:key="'prev' + index" @click="getListProducts(prev)"><!--(1)-->
             <a class="page-link" href="#">{{ prev }}</a>
         </li>
         <li class="page-item active">
             <a class="page-link" href="#">{{ pagination.current_page }}</a>
         </li>
-        <li class="page-item" v-for='( next, index ) in nextRange' v-bind:key="'next' + index" @click="getListProducts(next)">
+        <li class="page-item" v-for='( next, index ) in nextRange' v-bind:key="'next' + index" @click="getListProducts(next)"><!--(1)-->
             <a class="page-link" href="#">{{ next }}</a>
         </li>
         <li
@@ -179,7 +179,8 @@
             async getListProducts( page = 1 ){
               try {
                 const response = await axios.get('/products?page=' + page);
-                // console.log(response.data);
+               // const response = await axios.get('/products');
+               //  console.log(response.data);
                 this.listProducts = response.data.data;
                 this.pagination = response.data;
                
@@ -251,3 +252,10 @@
   opacity: 0;
 }
 </style> -->
+
+<!-- 
+***Note
+(1): must do that to avoid "Duplicate keys detected" error
+reF: https://stackoverflow.com/a/58667592/11297747
+
+-->
