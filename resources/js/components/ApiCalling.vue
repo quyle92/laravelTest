@@ -69,14 +69,14 @@
         >
             <a class="page-link" href="#">Previous</a>
         </li>
-        <li class="page-item" v-for='( value, index ) in productsOnSale' :key='index' @click="getListProducts(value)">
-            <a class="page-link" href="#">{{ value }}</a>
+        <li class="page-item" v-for='( prev, index ) in prevRange' v-bind:key="'prev' + index" @click="getListProducts(prev)">
+            <a class="page-link" href="#">{{ prev }}</a>
         </li>
         <li class="page-item active">
             <a class="page-link" href="#">{{ pagination.current_page }}</a>
         </li>
-        <li class="page-item" v-for='index in 3' :key='index' @click="getListProducts(pagination.current_page + index)">
-            <a class="page-link" href="#">{{ pagination.current_page + index  }}</a>
+        <li class="page-item" v-for='( next, index ) in nextRange' v-bind:key="'next' + index" @click="getListProducts(next)">
+            <a class="page-link" href="#">{{ next }}</a>
         </li>
         <li
             class="page-item"
@@ -117,16 +117,48 @@
           this.getListProducts();
         },
         computed: {
-          productsOnSale: function () {
-            let numRange = [];
-            //return numRange.includes(this.pagination.current_page) ? this.pagination.current_page -1 : 3;
-            //return [this.pagination.current_page - 3, this.pagination.current_page - 2, this.pagination.current_page - 1];
-            for (let i = this.pagination.current_page -3; i <= this.pagination.current_page - 1; i++){
-                numRange.push(i);
+
+          prevRange: function () {
+            let numRange = [1,2,3];
+            let pageRange = [];
+
+            if( ! numRange.includes(this.pagination.current_page) ){
+              for (let i = this.pagination.current_page - 3; i <= this.pagination.current_page - 1; i++){
+                  pageRange.push(i);
+              }
+             //console.log(pageRange);
+              return pageRange;
             }
-            //console.log(numRange);
-            return numRange;
+           
+           //nếu là 3 trang đầu sẽ chạy thằng này
+            for (let j = 1; j < this.pagination.current_page; j++) {
+              pageRange.push(this.pagination.current_page - j);
+              
+            }
+
+            return pageRange.reverse();//reverse() để cho pagition ở trên ko bị ngược.
+          },
+          nextRange: function () {
+            let numRange = [this.pagination.last_page, this.pagination.last_page - 1, this.pagination.last_page - 2];
+            let pageRange = [];
+            // console.log('pageRange: ');console.log(numRange);
+            if( ! numRange.includes(this.pagination.current_page) ){
+              for (let i = this.pagination.current_page + 1; i <= this.pagination.current_page + 3; i++){
+                  pageRange.push(i);
+              }
+               // console.log("a: "); console.log(pageRange);
+              return pageRange;
+            }
+            
+            //nếu là 3 trang cuối sẽ chạy thằng này
+            for (let j = 1; j <= ( this.pagination.last_page - this.pagination.current_page ); j++) {
+              pageRange.push(this.pagination.current_page + j);
+             
+            }
+             // console.log("b: "); console.log(pageRange);
+            return pageRange;
           }
+
         },
         methods: {
             async createProduct() {
@@ -147,7 +179,7 @@
             async getListProducts( page = 1 ){
               try {
                 const response = await axios.get('/products?page=' + page);
-                 console.log(response.data);
+                // console.log(response.data);
                 this.listProducts = response.data.data;
                 this.pagination = response.data;
                
