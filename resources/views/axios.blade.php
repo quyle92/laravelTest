@@ -16,8 +16,9 @@
 <body>
      <div id="app">
             <api-calling></api-calling>
-        </div>    
+     </div>    
 
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+	
 </body>
 </html>

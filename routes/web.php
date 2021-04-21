@@ -24,8 +24,23 @@ Route::get('listener', function () {
     return view('listener');
 });
 
+
+
+
 Route::get('axios', function () {
     return view('axios');	
 });
 
 Route::resource('products', \ProductController::class);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/welcome', function(){
+	return  view('welcome');
+})->name('welcome');
+// Route::get('/test', function(){
+// 	return  view('test');
+// })->name('test');
+
+
