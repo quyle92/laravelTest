@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSampledataTable extends Migration
+class CreateBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSampledataTable extends Migration
      */
     public function up()
     {
-        Schema::create('sampledata', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('first_name');
-            $table->text('last_name');
-            $table->double('age');
-            $table->text('gender');
+            $table->string('title');
+            $table->unsignedBigInteger('author_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSampledataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sampledata');
+        Schema::dropIfExists('books');
     }
 }

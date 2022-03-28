@@ -34,4 +34,11 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    'paypal' => [
+        'username' => 'sb-z435xf6424426_api1.business.example.com',
+        'password' => '94LADCVCVDTVWJV8',
+        'signature' => 'ALFgi8ofeA-6HuFl5AL7sH8tfO1oAKkd72emds3aIwNMPAWqf1Qb9NYT',
+        'sandbox' => 'sandbox',
+    ],
+
 ];

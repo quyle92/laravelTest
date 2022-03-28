@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Cruds;
-use Faker\Generator as Faker;
+
+use App\Book;
 use Illuminate\Http\Request;
 
-class CrudsController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CrudsController extends Controller
      */
     public function index()
     {
-         return response(Cruds::all()->jsonSerialize(), Response::HTTP_OK);
+        //
     }
 
     /**
@@ -22,14 +22,9 @@ class CrudsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Generator $faker)
+    public function create()
     {
-      $crud = new Cruds();
-      $crud->name = $faker->lexify('????????');
-      $crud->color = $faker->boolean ? 'red' : 'green';
-      $crud->save();
-
-      return response($crud->jsonSerialize(), Response::HTTP_CREATED);
+       
     }
 
     /**
@@ -39,17 +34,20 @@ class CrudsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+;
+        $book = Book::create( $this->validateRequest($request) );
+
+        return redirect($book->path());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $book)
     {
         //
     }
@@ -57,10 +55,10 @@ class CrudsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
         //
     }
@@ -69,28 +67,38 @@ class CrudsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $crud = Crud::findOrFail($id);
-        $crud->color = $request->color;
-        $crud->save();
+    public function update(Request $request, Book $book)
+    {   
 
-        return response(null, Response::HTTP_OK);
+        $book->update( $this->validateRequest($request) );
+
+        return redirect($book->path());
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        Crud::destroy($id);
+    public function destroy(Book $book)
+    {   
+        $book->delete();
 
-        return response(null, Response::HTTP_OK);
+        return redirect('/book');
+    }
+
+    protected function validateRequest( Request $request )
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'author_id' => 'required'
+        ]);
+       
+        return $data;
     }
 }

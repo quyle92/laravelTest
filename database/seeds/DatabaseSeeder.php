@@ -14,12 +14,13 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         $faker = Faker\Factory::create();
 
-        $limit = 20;
+        $limit = 3;
 
         for ($i = 0; $i < $limit; $i++) {
-            DB::table('products')->insert([
-                'name' => $faker->name,
-                'price' => $faker->creditCardNumber,
+            DB::table('orders')->insert([
+                'transaction_id' => '00' . $i++ . '-TEST',
+                'amount' => $faker->randomDigit,
+                'payment_status' => 0
             ]);
         }
     }
